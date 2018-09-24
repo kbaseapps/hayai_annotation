@@ -116,11 +116,11 @@ class hayai_annotationTest(unittest.TestCase):
         self.loadFakeGenome()
 
         # Running your parent method
-        ret = self.getImpl().hayai_annotation(self.getContext(), {'input_ws' : self.getWsName(),
-                                                                  'input_genome' : self.genome,
-                                                                  'alignment_type' : 'local',
-                                                                  'organism_type' : 'model',
-                                                                  'max_hits_per_query' : 5,
-                                                                  'max_seq_id' : 0.5})
+        ret = self.getImpl().annotate_plant_genome(self.getContext(), {'input_ws' : self.getWsName(),
+                                                                       'input_genome' : self.genome,
+                                                                       'alignment_type' : 'local',
+                                                                       'organism_type' : 'model',
+                                                                       'max_hits_per_query' : 5,
+                                                                       'max_seq_id' : 0.5})
         self.assertEqual(ret[0]['number_annotations'],1)
         pass
