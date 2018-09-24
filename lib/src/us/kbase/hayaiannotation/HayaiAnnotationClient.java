@@ -163,20 +163,20 @@ public class HayaiAnnotationClient {
     }
 
     /**
-     * <p>Original spec-file function name: hayai_annotation</p>
+     * <p>Original spec-file function name: annotate_plant_genome</p>
      * <pre>
      * Here we define an actual function.
      * </pre>
-     * @param   input   instance of type {@link us.kbase.hayaiannotation.HayaiAnnotationParams HayaiAnnotationParams}
-     * @return   parameter "output" of type {@link us.kbase.hayaiannotation.HayaiAnnotationResults HayaiAnnotationResults}
+     * @param   input   instance of type {@link us.kbase.hayaiannotation.AnnotatePlantGenomeParams AnnotatePlantGenomeParams}
+     * @return   parameter "output" of type {@link us.kbase.hayaiannotation.AnnotatePlantGenomeResults AnnotatePlantGenomeResults}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public HayaiAnnotationResults hayaiAnnotation(HayaiAnnotationParams input, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public AnnotatePlantGenomeResults annotatePlantGenome(AnnotatePlantGenomeParams input, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(input);
-        TypeReference<List<HayaiAnnotationResults>> retType = new TypeReference<List<HayaiAnnotationResults>>() {};
-        List<HayaiAnnotationResults> res = caller.jsonrpcCall("hayai_annotation.hayai_annotation", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        TypeReference<List<AnnotatePlantGenomeResults>> retType = new TypeReference<List<AnnotatePlantGenomeResults>>() {};
+        List<AnnotatePlantGenomeResults> res = caller.jsonrpcCall("hayai_annotation.annotate_plant_genome", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

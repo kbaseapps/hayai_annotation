@@ -108,9 +108,9 @@ sub new
 
 
 
-=head2 hayai_annotation
+=head2 annotate_plant_genome
 
-  $output = $obj->hayai_annotation($input)
+  $output = $obj->annotate_plant_genome($input)
 
 =over 4
 
@@ -119,9 +119,9 @@ sub new
 =begin html
 
 <pre>
-$input is a hayai_annotation.HayaiAnnotationParams
-$output is a hayai_annotation.HayaiAnnotationResults
-HayaiAnnotationParams is a reference to a hash where the following keys are defined:
+$input is a hayai_annotation.AnnotatePlantGenomeParams
+$output is a hayai_annotation.AnnotatePlantGenomeResults
+AnnotatePlantGenomeParams is a reference to a hash where the following keys are defined:
 	input_ws has a value which is a string
 	input_genome has a value which is a string
 	output_genome has a value which is a string
@@ -132,7 +132,7 @@ HayaiAnnotationParams is a reference to a hash where the following keys are defi
 	max_e_value has a value which is a float
 	query_coverage has a value which is a float
 	target_coverage has a value which is a float
-HayaiAnnotationResults is a reference to a hash where the following keys are defined:
+AnnotatePlantGenomeResults is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
 
@@ -142,9 +142,9 @@ HayaiAnnotationResults is a reference to a hash where the following keys are def
 
 =begin text
 
-$input is a hayai_annotation.HayaiAnnotationParams
-$output is a hayai_annotation.HayaiAnnotationResults
-HayaiAnnotationParams is a reference to a hash where the following keys are defined:
+$input is a hayai_annotation.AnnotatePlantGenomeParams
+$output is a hayai_annotation.AnnotatePlantGenomeResults
+AnnotatePlantGenomeParams is a reference to a hash where the following keys are defined:
 	input_ws has a value which is a string
 	input_genome has a value which is a string
 	output_genome has a value which is a string
@@ -155,7 +155,7 @@ HayaiAnnotationParams is a reference to a hash where the following keys are defi
 	max_e_value has a value which is a float
 	query_coverage has a value which is a float
 	target_coverage has a value which is a float
-HayaiAnnotationResults is a reference to a hash where the following keys are defined:
+AnnotatePlantGenomeResults is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
 
@@ -170,7 +170,7 @@ Here we define an actual function.
 
 =cut
 
- sub hayai_annotation
+ sub annotate_plant_genome
 {
     my($self, @args) = @_;
 
@@ -179,7 +179,7 @@ Here we define an actual function.
     if ((my $n = @args) != 1)
     {
 	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function hayai_annotation (received $n, expecting 1)");
+							       "Invalid argument count for function annotate_plant_genome (received $n, expecting 1)");
     }
     {
 	my($input) = @args;
@@ -187,31 +187,31 @@ Here we define an actual function.
 	my @_bad_arguments;
         (ref($input) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"input\" (value was \"$input\")");
         if (@_bad_arguments) {
-	    my $msg = "Invalid arguments passed to hayai_annotation:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    my $msg = "Invalid arguments passed to annotate_plant_genome:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
-								   method_name => 'hayai_annotation');
+								   method_name => 'annotate_plant_genome');
 	}
     }
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "hayai_annotation.hayai_annotation",
+	    method => "hayai_annotation.annotate_plant_genome",
 	    params => \@args,
     });
     if ($result) {
 	if ($result->is_error) {
 	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
 					       code => $result->content->{error}->{code},
-					       method_name => 'hayai_annotation',
+					       method_name => 'annotate_plant_genome',
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
 	    return wantarray ? @{$result->result} : $result->result->[0];
 	}
     } else {
-        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method hayai_annotation",
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method annotate_plant_genome",
 					    status_line => $self->{client}->status_line,
-					    method_name => 'hayai_annotation',
+					    method_name => 'annotate_plant_genome',
 				       );
     }
 }
@@ -259,16 +259,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'hayai_annotation',
+                method_name => 'annotate_plant_genome',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method hayai_annotation",
+            error => "Error invoking method annotate_plant_genome",
             status_line => $self->{client}->status_line,
-            method_name => 'hayai_annotation',
+            method_name => 'annotate_plant_genome',
         );
     }
 }
@@ -305,7 +305,7 @@ sub _validate_version {
 
 
 
-=head2 HayaiAnnotationParams
+=head2 AnnotatePlantGenomeParams
 
 =over 4
 
@@ -359,7 +359,7 @@ target_coverage has a value which is a float
 
 
 
-=head2 HayaiAnnotationResults
+=head2 AnnotatePlantGenomeResults
 
 =over 4
 

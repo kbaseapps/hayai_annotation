@@ -333,10 +333,10 @@ class Application(object):
         self.serverlog.set_log_level(6)
         self.rpc_service = JSONRPCServiceCustom()
         self.method_authentication = dict()
-        self.rpc_service.add(impl_hayai_annotation.hayai_annotation,
-                             name='hayai_annotation.hayai_annotation',
+        self.rpc_service.add(impl_hayai_annotation.annotate_plant_genome,
+                             name='hayai_annotation.annotate_plant_genome',
                              types=[dict])
-        self.method_authentication['hayai_annotation.hayai_annotation'] = 'required'  # noqa
+        self.method_authentication['hayai_annotation.annotate_plant_genome'] = 'required'  # noqa
         self.rpc_service.add(impl_hayai_annotation.status,
                              name='hayai_annotation.status',
                              types=[dict])

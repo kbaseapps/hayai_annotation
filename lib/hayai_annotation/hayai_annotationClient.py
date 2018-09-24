@@ -33,10 +33,10 @@ class hayai_annotation(object):
             trust_all_ssl_certificates=trust_all_ssl_certificates,
             auth_svc=auth_svc)
 
-    def hayai_annotation(self, input, context=None):
+    def annotate_plant_genome(self, input, context=None):
         """
         Here we define an actual function.
-        :param input: instance of type "HayaiAnnotationParams" (Here we
+        :param input: instance of type "AnnotatePlantGenomeParams" (Here we
            define the parameters that are passed from the UI The same
            parameters need to be defined in ui/narrative/methods/) ->
            structure: parameter "input_ws" of String, parameter
@@ -46,14 +46,14 @@ class hayai_annotation(object):
            "max_seq_id" of Double, parameter "max_e_value" of Double,
            parameter "query_coverage" of Double, parameter "target_coverage"
            of Double
-        :returns: instance of type "HayaiAnnotationResults" (Here we define
-           the output, which, for the purposes of the UI, will always be a
-           report. The contents of the report are shown, in HTML, in the
+        :returns: instance of type "AnnotatePlantGenomeResults" (Here we
+           define the output, which, for the purposes of the UI, will always
+           be a report. The contents of the report are shown, in HTML, in the
            output widget.) -> structure: parameter "report_name" of String,
            parameter "report_ref" of String
         """
         return self._client.call_method(
-            'hayai_annotation.hayai_annotation',
+            'hayai_annotation.annotate_plant_genome',
             [input], self._service_ver, context)
 
     def status(self, context=None):
