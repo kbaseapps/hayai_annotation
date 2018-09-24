@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+#BEGIN_HEADER
+#END_HEADER
+
+
+class hayai_annotation:
+    '''
+    Module Name:
+    hayai_annotation
+
+    Module Description:
+    A KBase module: hayai_annotation
+    '''
+
+    ######## WARNING FOR GEVENT USERS ####### noqa
+    # Since asynchronous IO can lead to methods - even the same method -
+    # interrupting each other, you must be *very* careful when using global
+    # state. A method could easily clobber the state set by another while
+    # the latter method is running.
+    ######################################### noqa
+    VERSION = "0.0.1"
+    GIT_URL = ""
+    GIT_COMMIT_HASH = ""
+
+    #BEGIN_CLASS_HEADER
+    #END_CLASS_HEADER
+
+    # config contains contents of config file in a hash or None if it couldn't
+    # be found
+    def __init__(self, config):
+        #BEGIN_CONSTRUCTOR
+        #END_CONSTRUCTOR
+        pass
+
+
+    def hayai_annotation(self, ctx, input):
+        """
+        Here we define an actual function.
+        :param input: instance of type "HayaiAnnotationParams" (Here we
+           define the parameters that are passed from the UI The same
+           parameters need to be defined in ui/narrative/methods/) ->
+           structure: parameter "input_ws" of String, parameter
+           "input_genome" of String, parameter "output_genome" of String,
+           parameter "alignment_type" of String, parameter "organism_type" of
+           String, parameter "max_hits_per_query" of Long, parameter
+           "max_seq_id" of Double, parameter "max_e_value" of Double,
+           parameter "query_coverage" of Double, parameter "target_coverage"
+           of Double
+        :returns: instance of type "HayaiAnnotationResults" (Here we define
+           the output, which, for the purposes of the UI, will always be a
+           report. The contents of the report are shown, in HTML, in the
+           output widget.) -> structure: parameter "report_name" of String,
+           parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN hayai_annotation
+        #END hayai_annotation
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method hayai_annotation return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+    def status(self, ctx):
+        #BEGIN_STATUS
+        returnVal = {'state': "OK",
+                     'message': "",
+                     'version': self.VERSION,
+                     'git_url': self.GIT_URL,
+                     'git_commit_hash': self.GIT_COMMIT_HASH}
+        #END_STATUS
+        return [returnVal]

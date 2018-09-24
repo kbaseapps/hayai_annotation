@@ -1,0 +1,337 @@
+Validation step is skipped
+
+Delete old Docker containers
+6961f3bbf5dc
+
+Build Docker image
+Sending build context to Docker daemon  15.59MB
+
+Step 1/9 : FROM kbase/kbase:sdkbase2.latest
+ ---> c982660ab775
+Step 2/9 : MAINTAINER KBase Developer
+ ---> Using cache
+ ---> 54b1b3a35a30
+Step 3/9 : COPY ./ /kb/module
+ ---> b67f9d0d580b
+Step 4/9 : RUN mkdir -p /kb/module/work
+ ---> Running in 1f3282429bc1
+Removing intermediate container 1f3282429bc1
+ ---> c618aff31804
+Step 5/9 : RUN chmod -R a+rw /kb/module
+ ---> Running in b94d6ba3da33
+Removing intermediate container b94d6ba3da33
+ ---> fdb385752c36
+Step 6/9 : WORKDIR /kb/module
+ ---> Running in cef082d908bf
+Removing intermediate container cef082d908bf
+ ---> 4d50ccc37c89
+Step 7/9 : RUN make all
+ ---> Running in 9da108f2ead7
+kb-sdk compile hayai_annotation.spec \
+		--out lib \
+		--plclname hayai_annotation::hayai_annotationClient \
+		--jsclname javascript/Client \
+		--pyclname hayai_annotation.hayai_annotationClient \
+		--javasrc src \
+		--java \
+		--pysrvname hayai_annotation.hayai_annotationServer \
+		--pyimplname hayai_annotation.hayai_annotationImpl;
+KBase SDK version 1.0.18 (commit 77b234908144735f69085117258746ee0ecad28a)
+chmod +x scripts/entrypoint.sh
+mkdir -p bin
+echo '#!/bin/bash' > scripts/start_server.sh
+echo 'script_dir=$(dirname "$(readlink -f "$0")")' >> scripts/start_server.sh
+echo 'export KB_DEPLOYMENT_CONFIG=$script_dir/../deploy.cfg' >> scripts/start_server.sh
+echo 'export PYTHONPATH=$script_dir/../lib:$PATH:$PYTHONPATH' >> scripts/start_server.sh
+echo 'uwsgi --master --processes 5 --threads 5 --http :5000 --wsgi-file $script_dir/../lib/hayai_annotation/hayai_annotationServer.py' >> scripts/start_server.sh
+chmod +x scripts/start_server.sh
+mkdir -p bin
+echo '#!/bin/bash' > bin/run_hayai_annotation_async_job.sh
+echo 'script_dir=$(dirname "$(readlink -f "$0")")' >> bin/run_hayai_annotation_async_job.sh
+echo 'export PYTHONPATH=$script_dir/../lib:$PATH:$PYTHONPATH' >> bin/run_hayai_annotation_async_job.sh
+echo 'python -u $script_dir/../lib/hayai_annotation/hayai_annotationServer.py $1 $2 $3' >> bin/run_hayai_annotation_async_job.sh
+chmod +x bin/run_hayai_annotation_async_job.sh
+echo '#!/bin/bash' > test/run_tests.sh
+echo 'script_dir=$(dirname "$(readlink -f "$0")")' >> test/run_tests.sh
+echo 'export KB_DEPLOYMENT_CONFIG=$script_dir/../deploy.cfg' >> test/run_tests.sh
+echo 'export KB_AUTH_TOKEN=`cat /kb/module/work/token`' >> test/run_tests.sh
+echo 'export PYTHONPATH=$script_dir/../lib:$PATH:$PYTHONPATH' >> test/run_tests.sh
+echo 'cd $script_dir/../test' >> test/run_tests.sh
+echo 'python -m nose --with-coverage --cover-package=hayai_annotation --cover-html --cover-html-dir=/kb/module/work/test_coverage --nocapture  --nologcapture .' >> test/run_tests.sh
+chmod +x test/run_tests.sh
+Removing intermediate container 9da108f2ead7
+ ---> 18233ae7c195
+Step 8/9 : ENTRYPOINT [ "./scripts/entrypoint.sh" ]
+ ---> Running in cd0e64c1a60f
+Removing intermediate container cd0e64c1a60f
+ ---> 68dc4ae40016
+Step 9/9 : CMD [ ]
+ ---> Running in 8e50c9049d3b
+Removing intermediate container 8e50c9049d3b
+ ---> af114a82f0db
+Successfully built af114a82f0db
+Successfully tagged test/hayai_annotation:latest
+Delete old Docker image
+Deleted: sha256:1406c65b18054734a9aa4b31f84833a5dc0a81239b3ca93e32beaa54c8e6b05f
+Deleted: sha256:11309a67ad3c58d8d1cb8581ad8bd60d346d3de443a423b59930575231ba1f4d
+Deleted: sha256:4519658c9c2b650487374eed2f3fecf968001f6494f452d288f48477c1d2043d
+Deleted: sha256:1f4cf732072d9b8dfa9eb651923944bfbdd33af1b7aad66aff6ca29c8cbc1314
+Deleted: sha256:2405163bfc9cdfb60ae4a991e02ed8ddd4b5771e543ba459b6702f07d164a2dd
+Deleted: sha256:bb6d5b56618f72f704c2485034076a18b706b490f1e2c3d187f1f6d8ec713350
+Deleted: sha256:2edff44d70f9bfc3f877ae041ec40c3b276a8e8b7399410231e458b7ea611305
+Deleted: sha256:824a9bb27e33decf9b3d731e078b2363562904bf88dca5a996e70e187c6ba80c
+Deleted: sha256:a3ccb33a3cd1f3133581cec773e1199ac0b2a56991b972de14f7c144de7a2af9
+Deleted: sha256:e720418e60865ec4be89d0b72be6f61e0e27da68f1fc0123e6b1b2e251d9a63e
+Deleted: sha256:fb5c0a5cc274ee74d4e4897e44a2544d0b5e074f22e09c6b87a8d4decb250798
+
+readlink: illegal option -- f
+usage: readlink [-n] [file ...]
+Run Tests
+if [ ! -f /kb/module/work/token ]; then echo -e '\nOutside a docker container please run "kb-sdk test" rather than "make test"\n' && exit 1; fi
+bash test/run_tests.sh
+1537821356.17 - CallbackServer: Subjob method: GenomeFileUtil.fasta_gff_to_genome JobID: 9efe023a-5d96-4383-9eff-9e7e7793c2ec
+1537821356.68 - CallbackServer: Running module GenomeFileUtil:
+url: https://github.com/kbaseapps/GenomeFileUtil
+commit: 627ca1ff24e456acaf0f41ff69757fead0a6766d
+version: 0.8.9
+release: release
+
+--->
+Running GenomeFileUtil.fasta_gff_to_genome
+params:
+{
+ "gff_file": {
+  "path": "/kb/module/work/tmp/Test_v1.0.gene.gff3.gz"
+ },
+ "fasta_file": {
+  "path": "/kb/module/work/tmp/Test_v1.0.fa.gz"
+ },
+ "source": "Phytozome",
+ "scientific_name": "Populus trichocarpa",
+ "genome_name": "Test_Genome",
+ "workspace_name": "test_hayai_annotation_1537821355633",
+ "type": "Reference"
+}
+1537821358.49: Moving file from /kb/module/work/tmp/Test_v1.0.fa.gz to /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.fa.gz
+1537821358.58: staged input file =/kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.fa.gz
+1537821358.56 - CallbackServer: Subjob method: DataFileUtil.unpack_file JobID: ef5f17c3-2cf5-4621-9963-898b629bff57
+1537821358.78 - CallbackServer: Running module DataFileUtil:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821364.11: Shock url: https://appdev.kbase.us/services/shock-api
+1537821364.86: decompressing (with pigz) /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.fa.gz to /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.fa ...
+1537821366.34: Moving file from /kb/module/work/tmp/Test_v1.0.gene.gff3.gz to /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.gene.gff3.gz
+1537821366.35: staged input file =/kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.gene.gff3.gz
+1537821366.35 - CallbackServer: Subjob method: DataFileUtil.unpack_file JobID: c84d5000-6158-4b55-a650-d6ff468c67b8
+1537821366.35 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821367.91: Shock url: https://appdev.kbase.us/services/shock-api
+1537821369.34: decompressing (with pigz) /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.gene.gff3.gz to /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.gene.gff3 ...
+1537821370.12: Setting params
+1537821370.12: {
+ "gff_file": {
+  "path": "/kb/module/work/tmp/Test_v1.0.gene.gff3.gz"
+ },
+ "fasta_file": {
+  "path": "/kb/module/work/tmp/Test_v1.0.fa.gz"
+ },
+ "source": "Phytozome",
+ "scientific_name": "Populus trichocarpa",
+ "genome_name": "Test_Genome",
+ "workspace_name": "test_hayai_annotation_1537821355633",
+ "type": "Reference",
+ "taxon_wsname": "ReferenceTaxons",
+ "taxon_reference": null,
+ "release": null,
+ "metadata": {}
+}
+1537821370.12: Reading GFF file
+1537821370.27: Adding missing identifiers
+1537821371.13 - CallbackServer: Subjob method: AssemblyUtil.save_assembly_from_fasta JobID: 66651c74-0d05-4649-ab4f-e62492eb5979
+1537821371.35 - CallbackServer: Running module AssemblyUtil:
+url: https://github.com/kbaseapps/AssemblyUtil
+commit: bde31aa6a684717bf6593eb98e7ace5f74612b78
+version: 1.0.8
+release: release
+
+save_assembly_from_fasta -- paramaters = 
+{u'assembly_name': u'Test_Genome.assembly',
+ u'file': {u'path': u'/kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.fa'},
+ u'workspace_name': u'test_hayai_annotation_1537821355633'}
+validating parameters
+staging input files
+1537821373.02 - CallbackServer: Subjob method: DataFileUtil.unpack_file JobID: 4abfb2eb-8554-4106-9fe2-a07b14d10183
+1537821373.02 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821374.3: Shock url: https://appdev.kbase.us/services/shock-api
+parsing FASTA file: /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.fa
+ - parsed 1 contigs, 11199920bp
+saving assembly to KBase
+Uploading FASTA file (/kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.fa) to SHOCK
+1537821383.06 - CallbackServer: Subjob method: DataFileUtil.file_to_shock JobID: f711786f-3964-4727-b962-7e1243ed16ad
+1537821383.06 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821384.84: Shock url: https://appdev.kbase.us/services/shock-api
+1537821385.71: uploading file /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.fa into shock node
+1537821410.06: uploading done into shock node: 9df72a79-7b9f-46f2-a829-87a5859f3fa4
+1537821422.34 - CallbackServer: Subjob method: DataFileUtil.ws_name_to_id JobID: fe14aaf5-0f14-4ab5-a5d3-f67cf7469c80
+1537821422.34 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821424.38: Shock url: https://appdev.kbase.us/services/shock-api
+Saving Assembly to Workspace
+1537821426.63 - CallbackServer: Subjob method: DataFileUtil.save_objects JobID: 72848db5-20cb-40a1-9582-296c2bb75c90
+1537821426.63 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821427.87: Shock url: https://appdev.kbase.us/services/shock-api
+1537821458.80 - CallbackServer: Subjob method: DataFileUtil.get_objects JobID: 69eb3d76-c8e3-4b61-ab15-89a2e1e5bb6d
+1537821458.80 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821463.92: Shock url: https://appdev.kbase.us/services/shock-api
+1537821467.50 - CallbackServer: Subjob method: DataFileUtil.file_to_shock JobID: fbc0c56a-7bc8-4f12-9d3b-5792be0ab597
+1537821467.50 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821468.87: Shock url: https://appdev.kbase.us/services/shock-api
+1537821469.61: gzipping (with pigz) /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.gene.gff3 to /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.gene.gff3.gz
+1537821470.01: uploading file /kb/module/work/tmp/fast_gff_upload_40550471-3938-4d29-8fff-52f4d3a88659/Test_v1.0.gene.gff3.gz into shock node
+1537821471.92: uploading done into shock node: 3005bbcc-741a-446c-be00-46839d4f5e9c
+2018-09-24 20:37:53: start saving genome object
+2018-09-24 20:37:53: start validating save_one_genome params
+2018-09-24 20:37:53: start checking handle genbank_handle_ref ownership
+2018-09-24 20:37:53: start checking handle gff_handle_ref ownership
+2018-09-24 20:37:54: start checking shock response
+2018-09-24 20:37:54: start checking dna sequence in each feature
+2018-09-24 20:37:54: Validating genome object contents
+Subobject Sizes:
+cdss: 3.7 MiB
+mrnas: 3.8 MiB
+features: 3.8 MiB
+non_coding_features: 51.0 B
+ontologies_present: 51.0 B
+Total size 11.3 MiB 
+1537821474.95 - CallbackServer: Subjob method: DataFileUtil.ws_name_to_id JobID: 54dfedf4-4475-40bf-a848-2f304ad0ddc9
+1537821474.95 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821476.42: Shock url: https://appdev.kbase.us/services/shock-api
+1537821479.11 - CallbackServer: Subjob method: DataFileUtil.save_objects JobID: 21784a57-3c9a-4e8b-94d1-c859a15b19f9
+1537821479.11 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821480.8: Shock url: https://appdev.kbase.us/services/shock-api
+1537821518.35: A genome with 1 contigs and the following feature types was imported: gene: 1028
+protein_encoding_gene: 1028
+mRNA: 1881
+CDS: 1881
+1537821553.62 - CallbackServer: Subjob method: DataFileUtil.get_objects JobID: cab519b0-3863-40a9-b806-af14f90ae812
+1537821553.62 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821556.32: Shock url: https://appdev.kbase.us/services/shock-api
+1537821566.74 - CallbackServer: Subjob method: GenomeFileUtil.save_one_genome JobID: ee294318-fc4e-4b7b-8d26-6566804e9384
+1537821566.74 - CallbackServer: WARNING: Module GenomeFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/GenomeFileUtil
+commit: 627ca1ff24e456acaf0f41ff69757fead0a6766d
+version: 0.8.9
+release: release
+
+2018-09-24 20:39:29: start saving genome object
+2018-09-24 20:39:29: start validating save_one_genome params
+2018-09-24 20:39:29: start checking handle genbank_handle_ref ownership
+2018-09-24 20:39:29: start checking handle gff_handle_ref ownership
+2018-09-24 20:39:29: start checking shock response
+2018-09-24 20:39:30: start checking dna sequence in each feature
+2018-09-24 20:39:30: Validating genome object contents
+Subobject Sizes:
+cdss: 3.7 MiB
+mrnas: 3.8 MiB
+features: 3.8 MiB
+non_coding_features: 51.0 B
+ontologies_present: 51.0 B
+Total size 11.3 MiB 
+1537821570.16 - CallbackServer: Subjob method: DataFileUtil.ws_name_to_id JobID: d46b9346-3694-472b-898f-d81df20a6d14
+1537821570.16 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821571.4: Shock url: https://appdev.kbase.us/services/shock-api
+1537821574.15 - CallbackServer: Subjob method: DataFileUtil.save_objects JobID: 3760fa6a-ecf8-4459-a980-4e51de67c632
+1537821574.15 - CallbackServer: WARNING: Module DataFileUtil was already used once for this job. Using cached version:
+url: https://github.com/kbaseapps/DataFileUtil
+commit: 2c2271c6e5351d1a8d2673b3b7b581c6599ec1f9
+version: 0.0.23
+release: release
+
+1537821579.93: Shock url: https://appdev.kbase.us/services/shock-api
+1537821625.54 - CallbackServer: Subjob method: KBaseReport.create_extended_report JobID: bfbffa7e-e680-4311-850f-89daf938fd98
+1537821626.38 - CallbackServer: Running module KBaseReport:
+url: https://github.com/kbaseapps/KBaseReport
+commit: 2cd253149595332c86667495032134ba64a7a96e
+version: 2.3.1
+release: release
+
+Use of uninitialized value in concatenation (.) or string at /kb/module/bin/../lib/KBaseReport/KBaseReportServer.pm line 274.
+Use of uninitialized value in string eq at /kb/deployment/lib/Bio/KBase/AuthToken.pm line 228.
+.
+Name                                         Stmts   Miss  Cover
+----------------------------------------------------------------
+hayai_annotation/__init__.py                     0      0   100%
+hayai_annotation/authclient.py                  58     18    69%
+hayai_annotation/hayai_annotationImpl.py        92      4    96%
+hayai_annotation/hayai_annotationServer.py     369    275    25%
+----------------------------------------------------------------
+TOTAL                                          519    297    43%
+----------------------------------------------------------------------
+Ran 1 test in 276.912s
+
+OK
+2018-09-24 20:39:13: Fetching plant genome: test_hayai_annotation_1537821355633/Test_Genome
+2018-09-24 20:39:26: Collecting sequences
+2018-09-24 20:39:26: Printing protein sequences to file
+2018-09-24 20:39:26: Running command: echo `head -n1 /kb/module/work/tmp/4d224d3c-c1da-4b05-8d13-8ada8c92c0c4/Test_Genome.fa | cut -f1 | perl -lne 'print substr($_,1)'`"	Hello World" > /kb/module/work/tmp/4d224d3c-c1da-4b05-8d13-8ada8c92c0c4/annotation.txt
+
+
+Test workspace was deleted
+Shutting down callback server...
+1537821632.40 - CallbackServer: Shutting down executor service
