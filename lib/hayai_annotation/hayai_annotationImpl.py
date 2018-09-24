@@ -56,10 +56,10 @@ class hayai_annotation:
         pass
 
 
-    def hayai_annotation(self, ctx, input):
+    def annotate_plant_genome(self, ctx, input):
         """
         Here we define an actual function.
-        :param input: instance of type "HayaiAnnotationParams" (Here we
+        :param input: instance of type "AnnotatePlantGenomeParams" (Here we
            define the parameters that are passed from the UI The same
            parameters need to be defined in ui/narrative/methods/) ->
            structure: parameter "input_ws" of String, parameter
@@ -69,7 +69,7 @@ class hayai_annotation:
            "max_seq_id" of Double, parameter "max_e_value" of Double,
            parameter "query_coverage" of Double, parameter "target_coverage"
            of Double
-        :returns: instance of type "HayaiAnnotationResults" (Here we define
+        :returns: instance of type "AnnotatePlantGenomeResults" (Here we define
            the output, which, for the purposes of the UI, will always be a
            report. The contents of the report are shown, in HTML, in the
            output widget.) -> structure: parameter "report_name" of String,

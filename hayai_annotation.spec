@@ -21,7 +21,7 @@ module hayai_annotation {
        float query_coverage;
        float target_coverage;
 
-   } HayaiAnnotationParams;
+   } AnnotatePlantGenomeParams;
 
    /*
        Here we define the output, which, for the purposes of the UI, will always be a report.
@@ -30,11 +30,11 @@ module hayai_annotation {
     typedef structure {
         string report_name;
         string report_ref;
-    } HayaiAnnotationResults;
+    } AnnotatePlantGenomeResults;
 
     /*
         Here we define an actual function.
     */
-    funcdef hayai_annotation(HayaiAnnotationParams input) returns (HayaiAnnotationResults output) authentication required;
+    funcdef annotate_plant_genome(AnnotatePlantGenomeParams input) returns (AnnotatePlantGenomeResults output) authentication required;
 
 };
