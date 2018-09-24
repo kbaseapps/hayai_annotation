@@ -1,0 +1,69 @@
+{
+    "ver": "0.0.1",
+    "authors": [
+        "seaver"
+    ],
+    "contact": "",
+    "categories": ["active", "annotation"],
+    "widgets": {
+        "input": null,
+        "output": "no-display"
+    },
+    "parameters": [ 
+        {
+            "id": "input_genome",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+	        "valid_ws_types": ["KBaseGenomes.Genome"]
+            }
+        },
+        {
+            "id": "output_genome",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+	        "valid_ws_types": ["KBaseGenomes.Genome"],
+		"is_output_name": true
+            }
+        }
+    ],
+    "behavior": {
+        "service-mapping": {
+            "url": "",
+            "name": "hayai_annotation",
+            "method": "hayai_annotation",
+            "input_mapping": [
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "input_ws"
+                },
+                {
+                    "input_parameter": "input_genome",
+                    "target_property": "input_genome"
+                },
+                {
+                    "input_parameter": "output_genome",
+                    "target_property": "output_genome"
+                }
+            ],
+            "output_mapping": [
+                {
+                    "service_method_output_path": [0, "report_name"],
+                    "target_property": "report_name"
+                },
+                {
+                    "service_method_output_path": [0, "report_ref"],
+                    "target_property": "report_ref"
+                }
+            ]
+        }
+    },
+    "job_id_output_field": "docker"
+}

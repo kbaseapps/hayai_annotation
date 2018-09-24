@@ -1,0 +1,52 @@
+#
+# define display information
+#
+name: Hayai Annotation
+
+tooltip: |
+    Annotating plant genomes using Hayai Annotation
+
+screenshots: []
+
+icon: 
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_genome :
+        ui-name : |
+            Genome 
+        short-hint : |
+            Selected genome to annotate
+        long-hint  : |
+            Selected genome to annotate
+
+    output_genome :
+        ui-name : |
+            Genome 
+        short-hint : |
+            Annotated genome
+        long-hint  : |
+            The resulting genome that was annotated
+
+description : |
+    
+    <p> This is the Hayai Annotation App. </p>
+    
+publications : 
