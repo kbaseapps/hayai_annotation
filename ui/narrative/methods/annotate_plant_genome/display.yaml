@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Hayai Annotation
+name: Annotate Plant Genome with Hayai Annotation
 
 tooltip: |
     Annotating plant genomes using Hayai Annotation
